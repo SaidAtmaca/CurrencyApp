@@ -29,7 +29,7 @@ class AppRepositoryImpl(
             Log.e("apiResponseLog1",apiResponse.status.toString())
             Log.e("apiResponseLog2",apiResponse.data.toString())
 
-            if (apiResponse.status.equals("succes")){
+            if (apiResponse.status.equals("success")){
                 emit(Resource.Success(apiResponse))
             }else{
                 emit(Resource.Error("Data Failed"))

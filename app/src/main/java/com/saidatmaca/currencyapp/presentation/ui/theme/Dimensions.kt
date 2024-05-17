@@ -1,4 +1,4 @@
-package com.onuss.fitlifeandroid.presentation.ui.theme
+package com.saidatmaca.currencyapp.presentation.ui.theme
 
 import androidx.compose.ui.unit.dp
 

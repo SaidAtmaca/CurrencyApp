@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,6 +22,8 @@ import androidx.navigation.NavController
 import com.saidatmaca.currencyapp.R
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
 import com.saidatmaca.currencyapp.presentation.components.AppTopBar
+import com.saidatmaca.currencyapp.presentation.components.CryptoRow
+import com.saidatmaca.currencyapp.presentation.util.Screen
 import kotlinx.coroutines.flow.collectLatest
 
 @Preview(showBackground = true)
@@ -76,7 +80,7 @@ fun HomeScreen(navController: NavController,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-                Text(text = "Home Screen", fontSize = 14.sp)
+               /* Text(text = "Home Screen", fontSize = 14.sp)
 
                 Button(onClick = { viewModel.goToDetailScreen()  }) {
                     Text(text = "Detail Page")
@@ -84,9 +88,26 @@ fun HomeScreen(navController: NavController,
 
                 Button(onClick = { viewModel.getAllCryptoData()  }) {
                     Text(text = "Get Cryptos")
+                }*/
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+                    items(viewModel.coins.value){
+
+                        CryptoRow(
+                            coin = it,
+                            rowClicked = {
+                                navController.currentBackStackEntry?.savedStateHandle?.set("coin",it)
+                                navController.navigate(Screen.DetailScreen.route)
+                            }
+                        )
+                    }
                 }
 
+
             }
+            
+            
+
 
 
 

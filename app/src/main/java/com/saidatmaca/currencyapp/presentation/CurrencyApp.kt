@@ -1,7 +1,9 @@
 package com.saidatmaca.currencyapp.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
@@ -24,35 +26,12 @@ fun CurrencyApp(
     CurrencyAppTheme {
         val navController = rememberNavController()
 
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val drawerMenuEnabled  = navBackStackEntry?.destination?.route in listOf(
-            Screen.HomeScreen.route
-        )
-        val drawerState =rememberDrawerState(DrawerValue.Closed)
-
-        val scope = rememberCoroutineScope()
 
 
-
-
-        ModalNavigationDrawer(
-            drawerContent = {
-                ModalDrawerSheet {
-                    Spacer(Modifier.height(20.dp))
-
-
-
-                }
-            },
-            drawerState = drawerState
-           ,
-            // Only enable opening the drawer via gestures if the screen is not expanded
-            gesturesEnabled = drawerMenuEnabled
-          
-        ) {
-            Row {
-               Navigation(navController = navController,drawerState )
-            }
+        Box(modifier = Modifier.fillMaxSize()){
+            Navigation(navController = navController )
         }
+
+
     }
 }

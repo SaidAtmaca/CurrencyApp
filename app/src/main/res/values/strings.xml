@@ -2,4 +2,8 @@
     <string name="app_name">CurrencyApp</string>
     <string name="homeScreen">Home Screen</string>
     <string name="detailScreen">Detail Screen</string>
+    <string name="loading">Loading...</string>
+    <string name="currentPrice">Current Price</string>
+    <string name="high">High :</string>
+    <string name="low">Low :</string>
 </resources>

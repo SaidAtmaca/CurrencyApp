@@ -12,6 +12,7 @@ import com.saidatmaca.currencyapp.core.common.observeUserLive
 import com.saidatmaca.currencyapp.core.utils.Resource
 import com.saidatmaca.currencyapp.data.local.entity.User
 import com.saidatmaca.currencyapp.domain.model.ApiResponse
+import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
 import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
 import com.saidatmaca.currencyapp.presentation.util.Screen
@@ -39,6 +40,9 @@ class HomeViewModel @Inject constructor(
     private val _apiResponse : MutableState<ApiResponse?> = mutableStateOf(null)
     val apiResponse : State<ApiResponse?> = _apiResponse
 
+    private val _coins : MutableState<List<Coin>> = mutableStateOf(listOf())
+    val coins : State<List<Coin>> = _coins
+
 
     private var job: Job? = null
 
@@ -46,8 +50,9 @@ class HomeViewModel @Inject constructor(
 
 
 
-    fun goToDetailScreen(){
+    fun goToDetailScreen( coin: Coin){
         viewModelScope.launch {
+
             _eventFlow.emit(UIEvent.Navigate(Screen.DetailScreen.route))
         }
     }
@@ -66,6 +71,11 @@ class HomeViewModel @Inject constructor(
                             result.data?.let {
 
                                 _apiResponse.value = it
+                                Log.e("allCryptoDataa3",it.status.toString())
+                                Log.e("allCryptoDataa4",it.data.toString())
+
+                                Log.e("allCryptoDataa2",it.data.coins.toString())
+                                _coins.value=it.data.coins
                             }
 
 
@@ -95,6 +105,7 @@ class HomeViewModel @Inject constructor(
 
    init {
 
+       getAllCryptoData()
 
        this.observeUserLive(userLiveUseCase){
            _userState.value = it
