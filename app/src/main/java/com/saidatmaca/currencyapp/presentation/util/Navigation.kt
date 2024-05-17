@@ -1,0 +1,32 @@
+package com.saidatmaca.currencyapp.presentation.util
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.DrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.saidatmaca.currencyapp.presentation.ui.detail.DetailScreen
+import com.saidatmaca.currencyapp.presentation.ui.home.HomeScreen
+
+
+@Composable
+fun Navigation(navController: NavHostController,drawerState: DrawerState) {
+    NavHost(navController = navController, startDestination = Screen.HomeScreen.route,
+        modifier = Modifier.fillMaxSize()){
+
+
+
+        composable(Screen.HomeScreen.route){
+            HomeScreen(navController = navController,)
+        }
+
+        composable(Screen.DetailScreen.route){
+            DetailScreen(navController = navController)
+        }
+
+    }
+}
