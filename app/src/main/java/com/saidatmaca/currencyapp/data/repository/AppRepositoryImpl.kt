@@ -6,6 +6,7 @@ import com.saidatmaca.currencyapp.data.local.RoomDatabaseDao
 import com.saidatmaca.currencyapp.data.local.entity.User
 import com.saidatmaca.currencyapp.data.remote.APIService
 import com.saidatmaca.currencyapp.domain.model.ApiResponse
+import com.saidatmaca.currencyapp.domain.model.HistoryApiResponse
 import com.saidatmaca.currencyapp.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -38,6 +39,27 @@ class AppRepositoryImpl(
         }catch (e:IOException){
             emit(Resource.Error(e.message.toString()))
         }
+    }
+
+    override fun getCryptoHistoryPrice(coinId:String): Flow<Resource<HistoryApiResponse>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val apiResponse = apiService.getCryptoHistoryPrice(coinId)
+
+            Log.e("apiResponseLog4",apiResponse.status.toString())
+            Log.e("apiResponseLog5",apiResponse.data.toString())
+
+            if (apiResponse.status.equals("success")){
+                emit(Resource.Success(apiResponse))
+            }else{
+                emit(Resource.Error("Data Failed"))
+            }
+
+        }catch (e:IOException){
+            emit(Resource.Error(e.message.toString()))
+        }
+
     }
 
 

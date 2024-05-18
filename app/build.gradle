@@ -158,11 +158,12 @@ dependencies {
 
     // Kotlin + coroutines
     def work_version = "2.8.1"
+    def graph_version = "1.2.3"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     //Glide compose
     implementation "com.github.bumptech.glide:compose:1.0.0-beta01"
 
-
+    implementation("com.github.jaikeerthick:Composable-Graphs:v$graph_version") //ex: v1.2.3
 
 }

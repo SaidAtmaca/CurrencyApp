@@ -77,7 +77,8 @@ fun DetailTopBar(
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(
-                    SpaceSmall
+                    horizontal = SpaceSmall,
+                    vertical = SpaceMedium
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween

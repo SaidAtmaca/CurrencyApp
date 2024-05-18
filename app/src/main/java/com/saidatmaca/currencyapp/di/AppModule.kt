@@ -16,6 +16,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -45,13 +46,27 @@ object AppModule {
     fun provideOkHttpClient(
     ): OkHttpClient {
 
+        val interceptor = Interceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("x-access-token", "coinrankingea8fbbc917a3c8a7ff1952a072dfd0f47a14559e79cd2908")
+                .build()
+            chain.proceed(request)
+        }
+
         Log.e("saedasdawdwad", BuildConfig.BUILD_TYPE.toString())
         val builder =
-            OkHttpClient.Builder().readTimeout(TIME_OUT_RETROFIT, TimeUnit.SECONDS).connectTimeout(
+            OkHttpClient
+                .Builder()
+                .readTimeout(
+                    TIME_OUT_RETROFIT,
+                    TimeUnit.SECONDS)
+                .connectTimeout(
                 TIME_OUT_RETROFIT,
                 TimeUnit.SECONDS
             )
-        builder.interceptors().add(HttpLoggingInterceptor().apply {
+        builder.interceptors()
+           // .add(interceptor)
+            .add(HttpLoggingInterceptor().apply {
             level =
                 if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         })

@@ -55,7 +55,6 @@ class HomeViewModel @Inject constructor(
 
     fun sortCoinList(type : Int){
 
-        Log.e("sortType",type.toString())
         when(type){
             SortValues.Default.value ->{
                 _coins.value = _defaultCoins.value
@@ -95,15 +94,10 @@ class HomeViewModel @Inject constructor(
 
                         is Resource.Success -> {
                             GlobalValues.showLoading.postValue(false)
-                            Log.e("allCryptoDataa1",result.data.toString())
 
                             result.data?.let {
 
                                 _apiResponse.value = it
-                                Log.e("allCryptoDataa3",it.status.toString())
-                                Log.e("allCryptoDataa4",it.data.toString())
-
-                                Log.e("allCryptoDataa2",it.data.coins.toString())
                                 _coins.value= listOf()
                                 _coins.value=it.data.coins
                                 _defaultCoins.value=it.data.coins
@@ -115,7 +109,6 @@ class HomeViewModel @Inject constructor(
 
                         is Resource.Error -> {
                             GlobalValues.showLoading.postValue(false)
-                            Log.e("allCryptoDataa2",result.data.toString())
                             _eventFlow.emit(
                                 UIEvent.ShowSnackbar(
                                     result.message ?: "Unknown error"
@@ -124,7 +117,6 @@ class HomeViewModel @Inject constructor(
                         }
 
                         is Resource.Loading -> {
-                            Log.e("allCryptoDataa3",result.data.toString())
                             GlobalValues.showLoading.postValue(true)
                         }
                     }
@@ -136,7 +128,6 @@ class HomeViewModel @Inject constructor(
 
    init {
 
-       Log.e("initLog1","dsda")
        getAllCryptoData()
 
 

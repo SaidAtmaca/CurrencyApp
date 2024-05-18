@@ -21,12 +21,13 @@ import com.saidatmaca.currencyapp.core.utils.ResponseResult
 import com.saidatmaca.currencyapp.data.local.entity.User
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.text.DecimalFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.abs
 
@@ -171,6 +172,12 @@ fun Float.formatChange(coin: Coin) : String{
         return newString
     }
 
+}
+
+fun Long.toFormattedDate(pattern: String = "yyyy-MM-dd", zoneId: ZoneId = ZoneId.systemDefault()): String {
+    val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(this), zoneId)
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return dateTime.format(formatter)
 }
 
 
