@@ -39,6 +39,8 @@ import com.bumptech.glide.integration.compose.Placeholder
 import com.bumptech.glide.integration.compose.placeholder
 import com.bumptech.glide.signature.ObjectKey
 import com.saidatmaca.currencyapp.R
+import com.saidatmaca.currencyapp.core.common.formatChange
+import com.saidatmaca.currencyapp.core.common.formatPrice
 import com.saidatmaca.currencyapp.data.repository.DummyDataRepository
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.presentation.ui.theme.greyColorPalette
@@ -92,7 +94,8 @@ fun CryptoRow(
             Row(
                 Modifier
                     .fillMaxHeight()
-                    .width(IntrinsicSize.Max)) {
+                    .fillMaxWidth()
+                    .weight(1f)) {
 
                 Image(painter = painter,
                     contentDescription ="",
@@ -131,15 +134,22 @@ fun CryptoRow(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(IntrinsicSize.Max)
+                        .fillMaxWidth()
                         .padding(start = 10.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
 
-                    Text(text = coin.symbol, fontSize = 12.sp, color = greyColorPalette.tone50)
+                    Text(text = coin.symbol,
+                        fontSize = 12.sp,
+                        color = greyColorPalette.tone50)
 
-                    Text(text = coin.name, fontSize = 12.sp, color = Color.Black, fontWeight = FontWeight.Medium)
+                    Text(text = coin.name,
+                        fontSize = 14.sp,
+                        color = mainColorPalette.tone5,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth().padding(end = 5.dp))
                 }
             }
 
@@ -151,9 +161,15 @@ fun CryptoRow(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.SpaceAround
                 ) {
-                Text(text = coin.price, fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                Text(text = coin.price.formatPrice(),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = mainColorPalette.tone5)
 
-                Text(text = coin.marketCap, fontSize = 8.sp)
+                Text(text = coin.change.formatChange(coin),
+                    fontSize = 12.sp,
+                    color = if (coin.change >= 0 ) mainColorPalette.tone7 else mainColorPalette.tone6,
+                    fontWeight = FontWeight.SemiBold)
             }
 
 

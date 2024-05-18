@@ -19,13 +19,16 @@ import com.google.gson.reflect.TypeToken
 import com.saidatmaca.currencyapp.core.WebServiceError
 import com.saidatmaca.currencyapp.core.utils.ResponseResult
 import com.saidatmaca.currencyapp.data.local.entity.User
+import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.text.DecimalFormat
 import java.util.Locale
+import kotlin.math.abs
 
 
 fun View.visible() {
@@ -121,6 +124,51 @@ fun Int.formatTime(): String {
     } else {
         String.format(Locale.getDefault(), "%02d DK", minutes)
 
+    }
+
+}
+
+fun Double.formatPrice(): String{
+
+    if (this > 1){
+        val decimalFormat = DecimalFormat("#,###.00")
+        val formattedNumber = decimalFormat.format(this)
+
+        val returnString = "$$formattedNumber"
+
+        return returnString
+
+    }else{
+
+        val formattedNumber = String.format("%.2f", this)
+        val returnString = "$$formattedNumber"
+
+        return returnString
+    }
+
+}
+
+fun Float.formatChange(coin: Coin) : String{
+    val decimalFormat = DecimalFormat("#,###.00")
+    if (this >= 0){
+        var plusValue = (coin.price * this) / 100
+        val formattedPlusValue = decimalFormat.format(plusValue)
+        val newString ="+$this%(+$$formattedPlusValue)"
+
+        if (this == 0f){
+            val zeroString ="$this%($$formattedPlusValue)"
+            return zeroString
+        }else{
+            return newString
+        }
+
+
+    }else{
+        var negativeValue = (coin.price * abs(this)) / 100
+        val formattedNegativeValue = decimalFormat.format(negativeValue)
+        val newString ="-$this%(-$$formattedNegativeValue)"
+
+        return newString
     }
 
 }

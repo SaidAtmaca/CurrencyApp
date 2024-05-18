@@ -5,8 +5,8 @@ import java.io.Serializable
 data class Stats(
     val total: Int,
     val totalCoins: Int,
-    val totalMarkets: Int,
-    val totalExchanges: Int,
-    val totalMarketCap: String,
-    val total24hVolume: String
+    val totalMarkets: Long,
+    val totalExchanges: Long,
+    val totalMarketCap: Double,
+    val total24hVolume: Double
 ) : Serializable

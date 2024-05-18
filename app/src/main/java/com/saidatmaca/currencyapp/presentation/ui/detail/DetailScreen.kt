@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.saidatmaca.currencyapp.R
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
+import com.saidatmaca.currencyapp.core.common.formatPrice
 import com.saidatmaca.currencyapp.data.repository.DummyDataRepository
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.presentation.components.AppTopBar
@@ -115,8 +116,8 @@ fun DetailScreen(
                         horizontalAlignment = Alignment.Start,
                         modifier = Modifier.padding(SpaceMedium)){
 
-                        Text(text = viewModel.coin.value?.price ?: stringResource(id = R.string.loading), fontSize = 16.sp)
-                        Text(text = viewModel.coin.value?.marketCap ?: stringResource(id = R.string.loading), fontSize = 12.sp)
+                        Text(text = viewModel.coin.value?.price?.formatPrice() ?: "" , fontSize = 16.sp)
+                        Text(text = viewModel.coin.value?.marketCap.toString(), fontSize = 12.sp)
                     }
 
 
@@ -130,7 +131,7 @@ fun DetailScreen(
                                 color = mainColorPalette.tone5,
                                 modifier = Modifier
                                     .padding(SpaceSmall))
-                            Text(text = viewModel.coin.value?.price ?: stringResource(id = R.string.loading))
+                            Text(text = viewModel.coin.value?.price.toString())
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = stringResource(id = R.string.low),
@@ -138,7 +139,7 @@ fun DetailScreen(
                                 color = mainColorPalette.tone5,
                                 modifier = Modifier
                                     .padding(SpaceSmall))
-                            Text(text = viewModel.coin.value?.price ?: stringResource(id = R.string.loading))
+                            Text(text = viewModel.coin.value?.price.toString())
                         }
                     }
 
