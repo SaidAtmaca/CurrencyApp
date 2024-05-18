@@ -46,6 +46,8 @@ val mainColorPalette = MainColorPalette(
     tone5 = Color(0xFF43366F),
     tone6 = Color(0xFFFF505F),
     tone7 = Color(0xFF66CDAA),
+    tone8 = Color(0xFFBDACF7),
+    tone9 = Color(0xFF5D4D99),
 )
 
 val appColor = Color(0xFF31304D)

@@ -1,5 +1,7 @@
 package com.saidatmaca.currencyapp.presentation.ui.detail
 
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.saidatmaca.currencyapp.R
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
@@ -35,7 +43,10 @@ import com.saidatmaca.currencyapp.presentation.components.DetailTopBar
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceMedium
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceSmall
 import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
+import com.saidatmaca.currencyapp.presentation.util.Screen
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
 @Composable
@@ -71,6 +82,7 @@ fun DetailScreen(
         }
 
     }
+
 
 
     Scaffold(

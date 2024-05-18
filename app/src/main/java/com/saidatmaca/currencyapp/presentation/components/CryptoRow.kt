@@ -104,32 +104,6 @@ fun CryptoRow(
                         .padding(5.dp)
                     )
 
-                /*GlideImage(
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .padding(5.dp),
-                    model = coin.iconUrl ,
-                    contentDescription = "",
-                    loading = placeholder(R.drawable.loading_gifo),
-                    failure = placeholder(R.drawable.baseline_warning_amber_24)
-                ){
-                    it
-                        .signature(ObjectKey(coin.uuid))
-                }*/
-                /*AsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                    .data(coin.iconUrl)
-                    .crossfade(true)
-                    .placeholder(R.drawable.loading_gifo)
-                    .build(),
-                    contentDescription =   "" ,
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .size(60.dp)
-                        .clickable {
-
-                        })*/
-
 
                 Column(
                     modifier = Modifier

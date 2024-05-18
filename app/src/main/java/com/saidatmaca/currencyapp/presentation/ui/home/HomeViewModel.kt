@@ -7,10 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saidatmaca.currencyapp.core.common.GlobalValues
+import com.saidatmaca.currencyapp.core.common.enums.SortValues
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
 import com.saidatmaca.currencyapp.core.common.observeUserLive
 import com.saidatmaca.currencyapp.core.utils.Resource
 import com.saidatmaca.currencyapp.data.local.entity.User
+import com.saidatmaca.currencyapp.di.AppModule_ProvideAppDatabaseFactory
 import com.saidatmaca.currencyapp.domain.model.ApiResponse
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
@@ -43,11 +45,38 @@ class HomeViewModel @Inject constructor(
     private val _coins : MutableState<List<Coin>> = mutableStateOf(listOf())
     val coins : State<List<Coin>> = _coins
 
+    private val _defaultCoins : MutableState<List<Coin>> = mutableStateOf(listOf())
+    val defaultCoins : State<List<Coin>> = _defaultCoins
+
 
     private var job: Job? = null
 
 
 
+    fun sortCoinList(type : Int){
+
+        Log.e("sortType",type.toString())
+        when(type){
+            SortValues.Default.value ->{
+                _coins.value = _defaultCoins.value
+            }
+            SortValues.Price.value ->{
+                _coins.value = _coins.value.sortedByDescending { it.price }
+            }
+            SortValues.MarketCap.value->{
+                _coins.value = _coins.value.sortedByDescending { it.marketCap }
+            }
+            SortValues.Volume.value->{
+                _coins.value = _coins.value.sortedByDescending { it.`24hVolume` }
+            }
+            SortValues.Change.value->{
+                _coins.value = _coins.value.sortedByDescending { it.change }
+            }
+            SortValues.ListedAt.value->{
+                _coins.value = _coins.value.sortedByDescending { it.listedAt }
+            }
+        }
+    }
 
 
     fun goToDetailScreen( coin: Coin){
@@ -75,7 +104,9 @@ class HomeViewModel @Inject constructor(
                                 Log.e("allCryptoDataa4",it.data.toString())
 
                                 Log.e("allCryptoDataa2",it.data.coins.toString())
+                                _coins.value= listOf()
                                 _coins.value=it.data.coins
+                                _defaultCoins.value=it.data.coins
                             }
 
 
@@ -105,11 +136,10 @@ class HomeViewModel @Inject constructor(
 
    init {
 
+       Log.e("initLog1","dsda")
        getAllCryptoData()
 
-       this.observeUserLive(userLiveUseCase){
-           _userState.value = it
-       }
+
    }
 
 }
