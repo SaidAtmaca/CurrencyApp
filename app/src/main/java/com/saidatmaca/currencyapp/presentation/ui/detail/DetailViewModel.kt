@@ -11,15 +11,14 @@ import androidx.lifecycle.viewModelScope
 import com.jaikeerthick.composable_graphs.composables.line.model.LineData
 import com.saidatmaca.currencyapp.core.common.GlobalValues
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
-import com.saidatmaca.currencyapp.core.common.observeUserLive
+import com.saidatmaca.currencyapp.core.common.observeFavCoinList
 import com.saidatmaca.currencyapp.core.common.toFormattedDate
 import com.saidatmaca.currencyapp.core.utils.Resource
-import com.saidatmaca.currencyapp.data.local.entity.User
+import com.saidatmaca.currencyapp.data.local.entity.CoinFavModel
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.model.HistoryApiResponse
 import com.saidatmaca.currencyapp.domain.model.HistoryModel
 import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
-import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
 import com.saidatmaca.currencyapp.presentation.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -32,7 +31,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val userLiveUseCase: UserLiveUseCase,
     private val cryptoUseCase: CryptoUseCase,
 ) : ViewModel(){
 
@@ -40,8 +38,6 @@ class DetailViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _userState : MutableState<User?> = mutableStateOf(null)
-    val userState : State<User?> = _userState
 
     private val _coin : MutableState<Coin?> = mutableStateOf(null)
     val coin : State<Coin?> = _coin
@@ -51,6 +47,18 @@ class DetailViewModel @Inject constructor(
 
     private val _historicalPriceList : MutableState<List<HistoryModel>> = mutableStateOf(listOf())
     val historicalPriceList : State<List<HistoryModel>> = _historicalPriceList
+
+    private val _isFavCoin : MutableState<Boolean> = mutableStateOf(false)
+    val isFavCoin : State<Boolean> = _isFavCoin
+
+    private val _favList : MutableState<List<CoinFavModel>> = mutableStateOf(listOf())
+    val favList : State<List<CoinFavModel>> = _favList
+
+
+
+    fun setFavCoin(boolean: Boolean){
+        _isFavCoin.value=boolean
+    }
 
 
 
@@ -146,9 +154,96 @@ class DetailViewModel @Inject constructor(
     }
 
 
+
+    fun checkFavPosition( ){
+        Log.e("sublistLog1",_favList.value.toString())
+        Log.e("sublistLog2",_coin.value.toString())
+        val subList = _favList.value.filter { it.uuid == _coin.value?.uuid }
+
+        Log.e("sublistLog3",subList.toString())
+        if (subList.isEmpty()){
+            _isFavCoin.value = false
+        }else{
+            _isFavCoin.value=true
+        }
+       /* if (_favList.value.find { it.uuid == _coin.value?.uuid } == null){
+            _isFavCoin.value = false
+        }else{
+            _isFavCoin.value = true
+        }*/
+
+
+    }
+
+    fun favClicked(){
+
+        if (_isFavCoin.value){
+            removeFromFavList()
+        }else{
+            addCoinFavList()
+        }
+
+    }
+
+
+
+    fun getCoinList(){
+
+        viewModelScope.launch {
+            cryptoUseCase.getCoinList()
+                .collect{
+
+                    Log.e("userLog",it.toString())
+                }
+        }
+    }
+
+    fun addCoinFavList(){
+        _coin.value?.let {
+            val newCoin = CoinFavModel(it.uuid)
+            var tempArrayList = arrayListOf<CoinFavModel>()
+            tempArrayList.addAll(_favList.value)
+            tempArrayList.add(newCoin)
+
+
+            viewModelScope.launch {
+
+                cryptoUseCase.insertCoinList(tempArrayList)
+
+            }
+
+        }
+
+    }
+
+    fun removeFromFavList(){
+        _coin.value?.let { coin ->
+
+            val tempArrayList = arrayListOf<CoinFavModel>()
+            tempArrayList.addAll(_favList.value)
+            tempArrayList.removeIf { it.uuid == coin.uuid }
+
+            viewModelScope.launch {
+
+                cryptoUseCase.insertCoinList(tempArrayList)
+
+            }
+
+
+
+
+        }
+    }
+
+
+
+
     init {
-        this.observeUserLive(userLiveUseCase){
-            _userState.value = it
+
+        this.observeFavCoinList(cryptoUseCase){
+            Log.e("favCoinList",it.toString())
+            _favList.value=it
+            checkFavPosition()
         }
     }
 

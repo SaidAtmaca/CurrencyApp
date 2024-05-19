@@ -8,6 +8,7 @@ object Constants {
 
     const val ROOM_DB_NAME = "app_db"
     const val ROOM_USER_TABLE = "user_table"
+    const val COIN_TABLE = "coin_table"
     const val ROOM_PLANNED_TRAVEL_TABLE = "planned_travel_table"
     const val DATA_STORE_NAME = "rotamenGoPreferenceDataStore"
 

@@ -11,14 +11,12 @@ import com.saidatmaca.currencyapp.data.remote.APIService
 import com.saidatmaca.currencyapp.data.repository.AppRepositoryImpl
 import com.saidatmaca.currencyapp.domain.repository.AppRepository
 import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
-import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -65,11 +63,7 @@ object AppModule {
                 TimeUnit.SECONDS
             )
         builder.interceptors()
-           // .add(interceptor)
-            .add(HttpLoggingInterceptor().apply {
-            level =
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-        })
+            .add(interceptor)
         return builder.build()
     }
 
@@ -99,14 +93,6 @@ object AppModule {
 
     /**------------------------------------------------------------------- USECASE PROVIDES  -----------------------------------------------***/
 
-
-
-
-    @Provides
-    @Singleton
-    fun provideUserLiveUseCase(repository: AppRepository): UserLiveUseCase {
-        return UserLiveUseCase(repository)
-    }
 
 
 

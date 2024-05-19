@@ -1,8 +1,8 @@
 package com.saidatmaca.currencyapp.presentation.components
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -22,22 +22,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.Placeholder
-import com.bumptech.glide.integration.compose.placeholder
-import com.bumptech.glide.signature.ObjectKey
 import com.saidatmaca.currencyapp.R
 import com.saidatmaca.currencyapp.core.common.formatChange
 import com.saidatmaca.currencyapp.core.common.formatPrice
@@ -50,13 +44,14 @@ import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
 @Composable
 fun CryptoRowPreview() {
     
-    CryptoRow(coin = DummyDataRepository.dummyCoin, rowClicked = {})
+    CryptoRow(coin = DummyDataRepository.dummyCoin, rowClicked = {}, isFav = false)
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CryptoRow(
     coin: Coin,
+    isFav : Boolean,
     rowClicked :(Coin) ->Unit
 ) {
 
@@ -70,6 +65,7 @@ fun CryptoRow(
             .padding(5.dp),
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(5.dp),
+        border = if (isFav)BorderStroke(1.dp, mainColorPalette.tone5) else BorderStroke(0.dp,Color.Transparent),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
 

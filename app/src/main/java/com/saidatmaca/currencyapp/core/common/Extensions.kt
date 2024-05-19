@@ -18,9 +18,12 @@ import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.saidatmaca.currencyapp.core.WebServiceError
 import com.saidatmaca.currencyapp.core.utils.ResponseResult
-import com.saidatmaca.currencyapp.data.local.entity.User
+import com.saidatmaca.currencyapp.data.local.entity.CoinFavModel
 import com.saidatmaca.currencyapp.domain.model.Coin
-import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
+import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.text.DecimalFormat
@@ -181,18 +184,6 @@ fun Long.toFormattedDate(pattern: String = "yyyy-MM-dd", zoneId: ZoneId = ZoneId
 }
 
 
-fun ViewModel.observeUserLive(userLiveUseCase: UserLiveUseCase, updateUser : (user : User?) -> Unit) {
-    viewModelScope.launch {
-      /*  userLiveUseCase.userFlow
-            .flowOn(Dispatchers.IO)
-            .distinctUntilChanged()
-            .collect { user ->
-                updateUser(user)
-
-            }*/
-    }
-}
-
 fun String.splitTime() : String{
     val splitList = this.split(" ")
     return if (splitList.size>1){
@@ -202,11 +193,30 @@ fun String.splitTime() : String{
     }
 }
 
-fun String.splitDate() : String{
+fun String.splitDate() : String {
     val splitList = this.split(" ")
-    return if (splitList.isNotEmpty()){
+    return if (splitList.isNotEmpty()) {
         splitList[0]
-    }else{
+    } else {
         this
     }
 }
+
+
+    fun ViewModel.observeFavCoinList(
+        cryptoUseCase: CryptoUseCase,
+        updateCoinList: (coinList: List<CoinFavModel>) -> Unit
+    ) {
+        viewModelScope.launch {
+            cryptoUseCase.coinFlow
+                .flowOn(Dispatchers.IO)
+                .distinctUntilChanged()
+                .collect { justCoinList ->
+
+                    updateCoinList(justCoinList)
+
+                }
+        }
+    }
+
+

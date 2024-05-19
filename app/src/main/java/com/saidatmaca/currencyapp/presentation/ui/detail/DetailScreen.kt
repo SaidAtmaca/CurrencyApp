@@ -80,6 +80,7 @@ fun DetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.setCoin(coin)
+        viewModel.checkFavPosition()
 
         coin?.let {
             Log.e("aboutToGoToApi",it.toString())
@@ -132,8 +133,8 @@ fun DetailScreen(
 
             DetailTopBar(
                 onbackClicked = { viewModel.goToHomeScreen() },
-                onFavClicked = {  },
-                isFavCoin = false,
+                onFavClicked = { viewModel.favClicked() },
+                isFavCoin = viewModel.isFavCoin.value,
                 coinSymbol = viewModel.coin.value?.symbol ?: "",
                 coinName = viewModel.coin.value?.name ?: ""
             )
@@ -151,122 +152,139 @@ fun DetailScreen(
                 horizontalAlignment = Alignment.Start) {
 
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(painter = painter,
-                            contentDescription ="",
-                            modifier = Modifier
-                                .size(100.dp)
-                                .padding(5.dp)
-                        )
-
-                        Text(text = viewModel.coin.value?.symbol ?: "",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color= mainColorPalette.tone4,
-                            modifier = Modifier.padding(horizontal = SpaceMedium))
-
-                        Text(text = viewModel.coin.value?.name ?: "",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color= mainColorPalette.tone5,
-                            modifier = Modifier.padding(horizontal = SpaceMedium))
-
-
-                    }
-
-
-
-                }
-
-
-                Text(
-                    text = stringResource(id = R.string.currentPrice),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(SpaceMedium))
-
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Max),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(SpaceMedium)){
-
-                        Text(text = viewModel.coin.value?.price?.formatPrice() ?: "" , fontSize = 16.sp, fontWeight = FontWeight.Bold, color = mainColorPalette.tone5)
-
-                        viewModel.coin.value?.let {
-                            Text(text = it.change.formatChange(it),
-                                fontSize = 12.sp,
-                                color = if (it.change >= 0 ) mainColorPalette.tone7 else mainColorPalette.tone6,
-                                fontWeight = FontWeight.SemiBold)
-                        }
-
-                    }
-
-
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(SpaceMedium)){
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = stringResource(id = R.string.high),
-                                fontWeight = FontWeight.Medium,
-                                color = mainColorPalette.tone5,
-                                modifier = Modifier
-                                    .padding(SpaceSmall),
-                                fontSize = 12.sp)
-                            Text(text = viewModel.coin.value?.price.toString(),
-                                fontSize = 12.sp)
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = stringResource(id = R.string.low),
-                                fontWeight = FontWeight.Medium,
-                                color = mainColorPalette.tone5,
-                                modifier = Modifier
-                                    .padding(SpaceSmall))
-                            Text(text = viewModel.coin.value?.price.toString())
-                        }
-                    }
-
-                }
-
-
-
-
-
-
-
-
-                AnimatedVisibility(visible = viewModel.lineGraphData.isNotEmpty()) {
-                    LineGraph(
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(1f)) {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(10.dp),
-                        data = viewModel.lineGraphData,
-                        onPointClick = {
-                            val y = it.y.toDouble()
-                            Toast.makeText(context, y.formatPrice(), Toast.LENGTH_SHORT).show()
-                        },
-                        style = LineGraphStyle(yAxisLabelPosition = LabelPosition.LEFT)
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     )
+                    {
+
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(painter = painter,
+                                contentDescription ="",
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .padding(5.dp)
+                            )
+
+                            Text(text = viewModel.coin.value?.symbol ?: "",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color= mainColorPalette.tone4,
+                                modifier = Modifier.padding(horizontal = SpaceMedium))
+
+                            Text(text = viewModel.coin.value?.name ?: "",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color= mainColorPalette.tone5,
+                                modifier = Modifier.padding(horizontal = SpaceMedium))
+
+
+                        }
+
+
+
+                    }
+
+
+                    Text(
+                        text = stringResource(id = R.string.currentPrice),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(SpaceMedium))
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.padding(SpaceMedium)){
+
+                            Text(text = viewModel.coin.value?.price?.formatPrice() ?: "" , fontSize = 16.sp, fontWeight = FontWeight.Bold, color = mainColorPalette.tone5)
+
+                            viewModel.coin.value?.let {
+                                Text(text = it.change.formatChange(it),
+                                    fontSize = 12.sp,
+                                    color = if (it.change >= 0 ) mainColorPalette.tone7 else mainColorPalette.tone6,
+                                    fontWeight = FontWeight.SemiBold)
+                            }
+
+                        }
+
+
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.padding(SpaceMedium)){
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.high),
+                                    fontWeight = FontWeight.Medium,
+                                    color = mainColorPalette.tone5,
+                                    modifier = Modifier
+                                        .padding(SpaceSmall),
+                                    fontSize = 12.sp)
+                                Text(text = viewModel.coin.value?.price.toString(),
+                                    fontSize = 12.sp)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.low),
+                                    fontWeight = FontWeight.Medium,
+                                    color = mainColorPalette.tone5,
+                                    modifier = Modifier
+                                        .padding(SpaceSmall))
+                                Text(text = viewModel.coin.value?.price.toString())
+                            }
+                        }
+
+                    }
                 }
+
+                Column(Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    AnimatedVisibility(visible = viewModel.lineGraphData.isNotEmpty()) {
+                        LineGraph(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(SpaceMedium),
+                            data = viewModel.lineGraphData,
+                            onPointClick = {
+                                val y = it.y.toDouble()
+                                Toast.makeText(context, y.formatPrice(), Toast.LENGTH_SHORT).show()
+                            },
+                            style = LineGraphStyle(yAxisLabelPosition = LabelPosition.LEFT)
+                        )
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

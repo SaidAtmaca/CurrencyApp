@@ -3,14 +3,16 @@ package com.saidatmaca.currencyapp.data.repository
 import android.util.Log
 import com.saidatmaca.currencyapp.core.utils.Resource
 import com.saidatmaca.currencyapp.data.local.RoomDatabaseDao
-import com.saidatmaca.currencyapp.data.local.entity.User
+import com.saidatmaca.currencyapp.data.local.entity.CoinFavModel
 import com.saidatmaca.currencyapp.data.remote.APIService
 import com.saidatmaca.currencyapp.domain.model.ApiResponse
 import com.saidatmaca.currencyapp.domain.model.HistoryApiResponse
 import com.saidatmaca.currencyapp.domain.repository.AppRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import okio.IOException
 
 class AppRepositoryImpl(
@@ -60,6 +62,66 @@ class AppRepositoryImpl(
             emit(Resource.Error(e.message.toString()))
         }
 
+    }
+
+
+
+    override fun insertCoinList(list: List<CoinFavModel>) {
+        try {
+            CoroutineScope(Dispatchers.IO)
+                .launch {
+                    dao.deleteCoinTable()
+                    dao.insertCoinList(list)
+                }
+        }catch (e:IOException){
+
+            e.printStackTrace()
+        }
+    }
+
+    override fun deleteCoinTable() {
+        try {
+            CoroutineScope(Dispatchers.IO)
+                .launch {
+                    dao.deleteCoinTable()
+                }
+        }catch (e:IOException){
+
+            e.printStackTrace()
+        }
+    }
+
+    override fun getCoinListLive(): Flow<List<CoinFavModel>> {
+
+        return dao.getCoinListLive()
+
+       /* try {
+
+            val list = dao.getConList()
+            Log.e("coinListLog1",list.toString())
+
+            emit(list)
+
+
+
+        }catch (e:IOException){
+            e.printStackTrace()
+        }*/
+    }
+
+    override fun getCoinList(): Flow<List<CoinFavModel>> = flow {
+         try {
+
+              val list = dao.getCoinList()
+              Log.e("coinListLog1",list.toString())
+
+              emit(list)
+
+
+
+          }catch (e:IOException){
+              e.printStackTrace()
+          }
     }
 
 

@@ -1,6 +1,5 @@
 package com.saidatmaca.currencyapp.presentation.ui.home
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,14 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.saidatmaca.currencyapp.core.common.GlobalValues
 import com.saidatmaca.currencyapp.core.common.enums.SortValues
 import com.saidatmaca.currencyapp.core.common.enums.UIEvent
-import com.saidatmaca.currencyapp.core.common.observeUserLive
+import com.saidatmaca.currencyapp.core.common.observeFavCoinList
 import com.saidatmaca.currencyapp.core.utils.Resource
-import com.saidatmaca.currencyapp.data.local.entity.User
-import com.saidatmaca.currencyapp.di.AppModule_ProvideAppDatabaseFactory
+import com.saidatmaca.currencyapp.data.local.entity.CoinFavModel
 import com.saidatmaca.currencyapp.domain.model.ApiResponse
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.domain.use_case.CryptoUseCase
-import com.saidatmaca.currencyapp.domain.use_case.UserLiveUseCase
 import com.saidatmaca.currencyapp.presentation.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -29,15 +26,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-   private val userLiveUseCase: UserLiveUseCase,
    private val cryptoUseCase: CryptoUseCase,
 ) : ViewModel(){
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _userState : MutableState<User?> = mutableStateOf(null)
-    val userState : State<User?> = _userState
 
     private val _apiResponse : MutableState<ApiResponse?> = mutableStateOf(null)
     val apiResponse : State<ApiResponse?> = _apiResponse
@@ -47,6 +41,9 @@ class HomeViewModel @Inject constructor(
 
     private val _defaultCoins : MutableState<List<Coin>> = mutableStateOf(listOf())
     val defaultCoins : State<List<Coin>> = _defaultCoins
+
+    private val _favList : MutableState<List<CoinFavModel>> = mutableStateOf(listOf())
+    val favList : State<List<CoinFavModel>> = _favList
 
 
     private var job: Job? = null
@@ -83,6 +80,12 @@ class HomeViewModel @Inject constructor(
 
             _eventFlow.emit(UIEvent.Navigate(Screen.DetailScreen.route))
         }
+    }
+
+    fun checkFavCard(coin: Coin) : Boolean {
+        val subList = _favList.value.filter { it.uuid == coin.uuid }
+
+        return subList.isNotEmpty()
     }
 
     fun getAllCryptoData(){
@@ -129,6 +132,11 @@ class HomeViewModel @Inject constructor(
    init {
 
        getAllCryptoData()
+
+       this.observeFavCoinList(cryptoUseCase){
+           _favList.value = it
+
+       }
 
 
    }
