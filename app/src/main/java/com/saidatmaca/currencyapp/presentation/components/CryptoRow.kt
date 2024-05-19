@@ -1,9 +1,10 @@
 package com.saidatmaca.currencyapp.presentation.components
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -44,15 +45,15 @@ import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
 @Preview(showBackground = true)
 @Composable
 fun CryptoRowPreview() {
-    
-    CryptoRow(coin = DummyDataRepository.dummyCoin, rowClicked = {}, isFav = false)
+
+    Box(modifier = Modifier.fillMaxSize().background(mainColorPalette.tone10))
+    CryptoRow(coin = DummyDataRepository.dummyCoin, rowClicked = {})
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CryptoRow(
     coin: Coin,
-    isFav : Boolean,
     rowClicked :(Coin) ->Unit
 ) {
 
@@ -65,8 +66,7 @@ fun CryptoRow(
             .height(IntrinsicSize.Max)
             .padding(5.dp),
         shape = RoundedCornerShape(5.dp),
-        elevation = CardDefaults.cardElevation(5.dp),
-        border = if (isFav)BorderStroke(1.dp, mainColorPalette.tone5) else BorderStroke(0.dp,Color.Transparent),
+        elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
 
@@ -84,7 +84,7 @@ fun CryptoRow(
         Row(
             Modifier
                 .fillMaxSize()
-                .padding(5.dp),
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -92,7 +92,8 @@ fun CryptoRow(
                 Modifier
                     .fillMaxHeight()
                     .fillMaxWidth()
-                    .weight(1f)) {
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically) {
 
                 Image(painter = painter,
                     contentDescription ="",
@@ -108,7 +109,7 @@ fun CryptoRow(
                         .fillMaxWidth()
                         .padding(start = 10.dp),
                     horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.SpaceAround
+                    verticalArrangement = Arrangement.Center
                 ) {
 
                     Text(text = coin.symbol,
@@ -121,7 +122,9 @@ fun CryptoRow(
                         color = mainColorPalette.tone5,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
-                        modifier = Modifier.fillMaxWidth().padding(end = 5.dp))
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 5.dp))
                 }
             }
 

@@ -35,7 +35,7 @@ fun AppTopBar(
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
-        .background(mainColorPalette.tone2)){
+        .background(mainColorPalette.tone5)){
 
         Row(
             modifier = Modifier

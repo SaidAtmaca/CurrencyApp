@@ -43,12 +43,16 @@ val mainColorPalette = MainColorPalette(
     tone2 = Color(0xFF31304D),
     tone3 = Color(0xFFB6BBC4),
     tone4 =Color(0xFF1F0ECE5),
-    tone5 = Color(0xFF43366F),
-    tone6 = Color(0xFFFF505F),
+    tone5 = Color(0xFF2b3f86),
+    tone6 = Color(0xFFeb666b),
     tone7 = Color(0xFF66CDAA),
-    tone8 = Color(0xFFBDACF7),
+    tone8 = Color(0xFF8b87e8),
     tone9 = Color(0xFF5D4D99),
+    tone10 = Color(0xFFf5f5f5),
+    tone11 = Color(0xFFe6e8fc),
 )
+
+
 
 val appColor = Color(0xFF31304D)
 val statusBarColor = Color(0xFF31304D)

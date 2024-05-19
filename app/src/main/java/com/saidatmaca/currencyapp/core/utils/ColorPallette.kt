@@ -25,5 +25,7 @@ data class MainColorPalette(
     val tone7 : Color,
     val tone8 : Color,
     val tone9 : Color,
+    val tone10 : Color,
+    val tone11 : Color,
 
 )

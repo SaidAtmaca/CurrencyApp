@@ -69,7 +69,7 @@ fun DetailTopBar(
             .fillMaxWidth()
             .height(IntrinsicSize.Max),
         shape = RoundedCornerShape(0.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
 

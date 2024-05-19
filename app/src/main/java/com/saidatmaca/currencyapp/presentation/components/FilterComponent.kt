@@ -1,13 +1,11 @@
 package com.saidatmaca.currencyapp.presentation.components
 
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,10 +80,11 @@ fun FilterComponent(
             isExpanded=it
         } ) {
 
+
         Card(
-            shape = RoundedCornerShape(10.dp),
-            elevation = CardDefaults.cardElevation(2.dp),
-            colors = CardDefaults.cardColors(containerColor = mainColorPalette.tone8),
+            shape = RoundedCornerShape(20.dp),
+            elevation = CardDefaults.cardElevation(0.dp),
+            colors = CardDefaults.cardColors(containerColor = mainColorPalette.tone11),
             modifier = Modifier
                 .width(minOf(100.dp))
                 .menuAnchor()
@@ -97,7 +95,7 @@ fun FilterComponent(
             Row(
                 Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceAround) {
 
                 Text(text = selectedFilter,
                     fontSize = 12.sp,
@@ -119,6 +117,7 @@ fun FilterComponent(
         DropdownMenu(expanded = isExpanded,
             onDismissRequest = { isExpanded=false },
             offset = DpOffset(0.dp,0.dp),
+            modifier = Modifier.background(mainColorPalette.tone10)
         ) {
 
 

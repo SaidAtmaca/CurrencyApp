@@ -3,7 +3,7 @@
     <string name="homeScreen">Home Screen</string>
     <string name="detailScreen">Detail Screen</string>
     <string name="loading">Loading...</string>
-    <string name="currentPrice">Current Price</string>
+    <string name="currentPrice">CURRENT PRICE</string>
     <string name="high">High :</string>
     <string name="low">Low :</string>
     <string name="price">Price</string>
@@ -14,4 +14,8 @@
     <string name="listedAt">ListedAt</string>
     <string name="rankingList">Ranking List</string>
     <string name="rank">Rank :</string>
+    <string name="areYouSure">Are You Sure Want to Quit ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="warning">Warning !</string>
 </resources>
