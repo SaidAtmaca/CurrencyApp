@@ -40,7 +40,7 @@ fun AppTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = SpaceMedium, vertical = 30.dp),
+                .padding(SpaceMedium),
             verticalAlignment = CenterVertically
         ){
 

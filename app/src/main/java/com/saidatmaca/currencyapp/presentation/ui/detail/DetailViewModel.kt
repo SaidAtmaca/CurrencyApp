@@ -54,6 +54,11 @@ class DetailViewModel @Inject constructor(
     private val _favList : MutableState<List<CoinFavModel>> = mutableStateOf(listOf())
     val favList : State<List<CoinFavModel>> = _favList
 
+    private val _highestPrice : MutableState<Double> = mutableStateOf(0.0)
+    val highestPrice : State<Double> = _highestPrice
+
+    private val _lowestPrice : MutableState<Double> = mutableStateOf(0.0)
+    val lowestPrice : State<Double> = _lowestPrice
 
 
     fun setFavCoin(boolean: Boolean){
@@ -100,7 +105,8 @@ class DetailViewModel @Inject constructor(
                                 _historicalPriceList.value=it.data.history
 
 
-                               createGraphUI()
+                                createGraphUI()
+                                findHighAndLowPrice()
 
 
 
@@ -130,6 +136,21 @@ class DetailViewModel @Inject constructor(
 
     }
 
+    private fun findHighAndLowPrice() {
+
+        var priceList = arrayListOf<Double>()
+        _historicalPriceList.value.forEach {
+            priceList.add(it.price)
+        }
+
+        val maxValue = priceList.max()
+        val minValue = priceList.min()
+
+        _highestPrice.value=maxValue
+        _lowestPrice.value = minValue
+
+    }
+
     private fun createGraphUI() {
 
         var data = arrayListOf<LineData>()
@@ -139,10 +160,10 @@ class DetailViewModel @Inject constructor(
         }*/
         val size = _historicalPriceList.value.size
 
-        data.add(LineData(_historicalPriceList.value.get(size/5).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/5).price))
-        data.add(LineData(_historicalPriceList.value.get(size/4).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/4).price))
-        data.add(LineData(_historicalPriceList.value.get(size/3).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/3).price))
+
+        data.add(LineData(_historicalPriceList.value.last().timestamp.toFormattedDate(),_historicalPriceList.value.last().price))
         data.add(LineData(_historicalPriceList.value.get(size/2).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/2).price))
+        data.add(LineData(_historicalPriceList.value.get(size/4).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/4).price))
         data.add(LineData(_historicalPriceList.value.get(0).timestamp.toFormattedDate(),_historicalPriceList.value.get(3).price))
 
         lineGraphData.clear()

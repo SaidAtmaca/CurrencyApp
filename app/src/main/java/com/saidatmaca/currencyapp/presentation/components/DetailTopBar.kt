@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceMedium
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceSmall
+import com.saidatmaca.currencyapp.presentation.ui.theme.greyColorPalette
 import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
 
 @Preview(showBackground = true)
@@ -102,12 +103,12 @@ fun DetailTopBar(
                 Text(text = coinSymbol,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color= mainColorPalette.tone4,
+                    color= greyColorPalette.tone100,
                     modifier = Modifier.padding(horizontal = SpaceMedium))
 
                 Text(text = coinName,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
                     color= mainColorPalette.tone5,
                     modifier = Modifier.padding(horizontal = SpaceMedium))
             }

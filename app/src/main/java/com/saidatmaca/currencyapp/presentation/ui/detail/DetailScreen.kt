@@ -50,8 +50,11 @@ import com.saidatmaca.currencyapp.core.common.formatPrice
 import com.saidatmaca.currencyapp.data.repository.DummyDataRepository
 import com.saidatmaca.currencyapp.domain.model.Coin
 import com.saidatmaca.currencyapp.presentation.components.DetailTopBar
+import com.saidatmaca.currencyapp.presentation.ui.theme.IconSizeLarge
+import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceLarge
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceMedium
 import com.saidatmaca.currencyapp.presentation.ui.theme.SpaceSmall
+import com.saidatmaca.currencyapp.presentation.ui.theme.greyColorPalette
 import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
 import com.saidatmaca.currencyapp.presentation.util.Screen
 import kotlinx.coroutines.android.awaitFrame
@@ -63,8 +66,86 @@ import kotlinx.coroutines.launch
 fun DetailScreenPreview() {
 
     val navController = rememberNavController()
-    DetailScreen(navController = navController,
-        coin = DummyDataRepository.dummyCoin)
+
+    val coin = DummyDataRepository.dummyCoin
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
+
+            Text(
+                text = stringResource(id = R.string.currentPrice),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)
+            )
+
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+
+                Column(
+                    horizontalAlignment = Alignment.Start
+                ) {
+
+                    Text(
+                        text = coin.price?.formatPrice() ?: "",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = mainColorPalette.tone5
+                    )
+                    coin.let {
+                        Text(
+                            text = it.change.formatChange(it),
+                            fontSize = 12.sp,
+                            color = if (it.change >= 0) mainColorPalette.tone7 else mainColorPalette.tone6,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+
+                }
+
+
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)
+                ) {
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(id = R.string.high),
+                            fontWeight = FontWeight.Medium,
+                            color = mainColorPalette.tone5,
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            text = coin.price.toString(),
+                            fontSize = 12.sp
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+
+                        Text(
+                            text = stringResource(id = R.string.low),
+                            fontWeight = FontWeight.Medium,
+                            color = mainColorPalette.tone5,
+                            fontSize = 12.sp
+                        )
+
+                        Text(
+                            text = coin.price.toString(),
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -155,11 +236,11 @@ fun DetailScreen(
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .weight(1f)) {
+                        .weight(0.7f)) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp),
+                            .padding(SpaceMedium),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     )
@@ -168,23 +249,39 @@ fun DetailScreen(
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
+                        )
+                        {
                             Image(painter = painter,
                                 contentDescription ="",
                                 modifier = Modifier
-                                    .size(100.dp)
+                                    .size(IconSizeLarge)
                                     .padding(5.dp)
                             )
+
+                            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.rank),
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color= mainColorPalette.tone5,
+                                    modifier = Modifier.padding(horizontal = SpaceSmall))
+
+                                Text(text = viewModel.coin.value?.rank.toString() ?: "",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color= mainColorPalette.tone5)
+                            }
+
+
 
                             Text(text = viewModel.coin.value?.symbol ?: "",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium,
-                                color= mainColorPalette.tone4,
+                                color= greyColorPalette.tone100,
                                 modifier = Modifier.padding(horizontal = SpaceMedium))
 
                             Text(text = viewModel.coin.value?.name ?: "",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
                                 color= mainColorPalette.tone5,
                                 modifier = Modifier.padding(horizontal = SpaceMedium))
 
@@ -195,25 +292,25 @@ fun DetailScreen(
 
                     }
 
-
-                    Text(
-                        text = stringResource(id = R.string.currentPrice),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(SpaceMedium))
-
+                    Row(Modifier.fillMaxWidth()) {
+                        Text(
+                            text = stringResource(id = R.string.currentPrice),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.padding(horizontal = SpaceMedium))
+                    }
 
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(IntrinsicSize.Max),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
 
                         Column(
                             horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.padding(SpaceMedium)){
+                            modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)){
 
                             Text(text = viewModel.coin.value?.price?.formatPrice() ?: "" , fontSize = 16.sp, fontWeight = FontWeight.Bold, color = mainColorPalette.tone5)
 
@@ -229,41 +326,45 @@ fun DetailScreen(
 
                         Column(
                             horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.padding(SpaceMedium)){
+                            modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)){
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(text = stringResource(id = R.string.high),
                                     fontWeight = FontWeight.Medium,
                                     color = mainColorPalette.tone5,
-                                    modifier = Modifier
-                                        .padding(SpaceSmall),
                                     fontSize = 12.sp)
-                                Text(text = viewModel.coin.value?.price.toString(),
-                                    fontSize = 12.sp)
+
+                                Text(text = viewModel.highestPrice.value.formatPrice(),
+                                    fontSize = 12.sp,
+                                    color = if (viewModel.highestPrice.value >= viewModel.coin.value?.price ?: 0.0) mainColorPalette.tone7 else mainColorPalette.tone6)
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
+
                                 Text(text = stringResource(id = R.string.low),
                                     fontWeight = FontWeight.Medium,
                                     color = mainColorPalette.tone5,
-                                    modifier = Modifier
-                                        .padding(SpaceSmall))
-                                Text(text = viewModel.coin.value?.price.toString())
+                                    fontSize = 12.sp)
+
+                                Text(text = viewModel.lowestPrice.value.formatPrice(),
+                                    fontSize = 12.sp,
+                                    color = if (viewModel.lowestPrice.value < viewModel.coin.value?.price ?: 0.0) mainColorPalette.tone6 else mainColorPalette.tone7)
                             }
                         }
 
                     }
                 }
 
-                Column(Modifier
-                    .fillMaxSize()
-                    .weight(1f),
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(0.3f),
                     horizontalAlignment = Alignment.CenterHorizontally) {
 
                     AnimatedVisibility(visible = viewModel.lineGraphData.isNotEmpty()) {
                         LineGraph(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(SpaceMedium),
+                                .padding(SpaceLarge),
                             data = viewModel.lineGraphData,
                             onPointClick = {
                                 val y = it.y.toDouble()

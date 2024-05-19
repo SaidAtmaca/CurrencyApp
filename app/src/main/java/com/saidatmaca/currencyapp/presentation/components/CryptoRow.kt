@@ -37,6 +37,7 @@ import com.saidatmaca.currencyapp.core.common.formatChange
 import com.saidatmaca.currencyapp.core.common.formatPrice
 import com.saidatmaca.currencyapp.data.repository.DummyDataRepository
 import com.saidatmaca.currencyapp.domain.model.Coin
+import com.saidatmaca.currencyapp.presentation.ui.theme.IconSizeMedium
 import com.saidatmaca.currencyapp.presentation.ui.theme.greyColorPalette
 import com.saidatmaca.currencyapp.presentation.ui.theme.mainColorPalette
 
@@ -96,7 +97,7 @@ fun CryptoRow(
                 Image(painter = painter,
                     contentDescription ="",
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(IconSizeMedium)
                         .padding(5.dp)
                     )
 
@@ -112,7 +113,8 @@ fun CryptoRow(
 
                     Text(text = coin.symbol,
                         fontSize = 12.sp,
-                        color = greyColorPalette.tone50)
+                        color = greyColorPalette.tone50,
+                        fontWeight = FontWeight.Bold)
 
                     Text(text = coin.name,
                         fontSize = 14.sp,
