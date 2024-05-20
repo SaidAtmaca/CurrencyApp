@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.saidatmaca.currencyapp.presentation.util.Navigation
-import com.saidatmaca.currencyapp.ui.theme.CurrencyAppTheme
+import com.saidatmaca.currencyapp.presentation.ui.theme.CurrencyAppTheme
 
 @Composable
 fun CurrencyApp(

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.saidatmaca.currencyapp.presentation.CurrencyApp
-import com.saidatmaca.currencyapp.ui.theme.CurrencyAppTheme
+import com.saidatmaca.currencyapp.presentation.ui.theme.CurrencyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -47,10 +47,10 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun FitLifeTheme(
+fun CurrencyAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -59,18 +59,20 @@ fun FitLifeTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
 
+    val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = statusBarColor.toArgb()
+            // window.statusBarColor = statusBarColor.toArgb()
+            window.statusBarColor = mainColorPalette.tone10.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
