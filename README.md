@@ -1,7 +1,7 @@
 # Currency App
 
 This is an app which you can crpto currencies. You can add/remove favourites currencies.
-You can download app and install from **[here.](https://github.com/SaidAtmaca/Countries/raw/master/apks/contries-14-11-2022_v2.apk)**
+You can download app and install from **[here.](https://github.com/saidAtmaca98/CurrencyApp/blob/master/apks/CurrencyApp.apk)**
 
 ## Tech Stack
 
