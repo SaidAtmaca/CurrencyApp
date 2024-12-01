@@ -11,8 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.saidatmaca.currencyapp.presentation.CurrencyApp
-import com.saidatmaca.currencyapp.presentation.ui.theme.CurrencyAppTheme
+import com.saidatmaca.currencyapp.ui.CurrencyApp
+import com.saidatmaca.currencyapp.ui.theme.CurrencyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,11 +21,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             CurrencyAppTheme(dynamicColor = false) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     CurrencyApp()
                 }
             }
