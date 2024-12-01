@@ -1,10 +1,8 @@
 package com.saidatmaca.data.di
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
 import com.saidatmaca.common.Constants
-import com.saidatmaca.data.BuildConfig
 import com.saidatmaca.data.local.AppDatabase
 import com.saidatmaca.data.remote.APIService
 import com.saidatmaca.data.repository.AppRepositoryImpl
@@ -48,7 +46,6 @@ object DataAppModule {
             chain.proceed(request)
         }
 
-        Log.e("saedasdawdwad", BuildConfig.BUILD_TYPE.toString())
         val builder =
             OkHttpClient
                 .Builder()
