@@ -48,16 +48,6 @@ android {
             debuggable false
             buildConfigField 'String', 'BASE_URL', BASE_URL_PROD
         }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //applicationIdSuffix ".local"
-            manifestPlaceholders = [appName: APP_NAME_LOCAL]
-
-            debuggable true
-            buildConfigField "String", "BASE_URL", BASE_URL_LOCAL
-
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
