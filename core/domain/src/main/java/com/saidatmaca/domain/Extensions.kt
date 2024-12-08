@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.saidatmaca.domain.model.Coin
-import com.saidatmaca.domain.model.CoinFavModel
 import com.saidatmaca.domain.use_cases.CryptoUseCase
+import com.saidatmaca.model.Coin
+import com.saidatmaca.model.CoinFavModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn

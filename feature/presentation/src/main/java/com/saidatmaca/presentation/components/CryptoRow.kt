@@ -35,7 +35,7 @@ import coil.size.Size
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.saidatmaca.common.formatPrice
 import com.saidatmaca.domain.formatChange
-import com.saidatmaca.domain.model.Coin
+import com.saidatmaca.model.Coin
 import com.saidatmaca.presentation.GreyColorPalette
 import com.saidatmaca.presentation.IconSizeMedium
 import com.saidatmaca.presentation.MainColorPalette

@@ -1,6 +1,6 @@
 package com.saidatmaca.data.repository
 
-import com.saidatmaca.domain.model.Coin
+import com.saidatmaca.model.Coin
 
 object DummyDataRepository {
 

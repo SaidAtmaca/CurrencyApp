@@ -52,7 +52,7 @@ import com.jaikeerthick.composable_graphs.style.LabelPosition
 import com.saidatmaca.common.enums.UIEvent
 import com.saidatmaca.common.formatPrice
 import com.saidatmaca.domain.formatChange
-import com.saidatmaca.domain.model.Coin
+import com.saidatmaca.model.Coin
 import com.saidatmaca.presentation.GreyColorPalette
 import com.saidatmaca.presentation.IconSizeLarge
 import com.saidatmaca.presentation.MainColorPalette

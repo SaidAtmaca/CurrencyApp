@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.saidatmaca.domain.model.Coin
+import com.saidatmaca.model.Coin
 import com.saidatmaca.presentation.ui.detail.DetailScreen
 import com.saidatmaca.presentation.ui.home.HomeScreen
 

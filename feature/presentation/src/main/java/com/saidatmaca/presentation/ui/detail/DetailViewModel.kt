@@ -13,12 +13,12 @@ import com.saidatmaca.common.GlobalValues
 import com.saidatmaca.common.Resource
 import com.saidatmaca.common.enums.UIEvent
 import com.saidatmaca.common.toFormattedDate
-import com.saidatmaca.domain.model.Coin
-import com.saidatmaca.domain.model.CoinFavModel
-import com.saidatmaca.domain.model.HistoryApiResponse
-import com.saidatmaca.domain.model.HistoryModel
 import com.saidatmaca.domain.observeFavCoinList
 import com.saidatmaca.domain.use_cases.CryptoUseCase
+import com.saidatmaca.model.Coin
+import com.saidatmaca.model.CoinFavModel
+import com.saidatmaca.model.HistoryApiResponse
+import com.saidatmaca.model.HistoryModel
 import com.saidatmaca.presentation.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

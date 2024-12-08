@@ -1,10 +1,10 @@
 package com.saidatmaca.domain.use_cases
 
 import com.saidatmaca.common.Resource
-import com.saidatmaca.domain.model.ApiResponse
-import com.saidatmaca.domain.model.CoinFavModel
-import com.saidatmaca.domain.model.HistoryApiResponse
 import com.saidatmaca.domain.repository.AppRepository
+import com.saidatmaca.model.ApiResponse
+import com.saidatmaca.model.CoinFavModel
+import com.saidatmaca.model.HistoryApiResponse
 import kotlinx.coroutines.flow.Flow
 
 

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.saidatmaca.domain.model.CoinFavModel
+import com.saidatmaca.model.CoinFavModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

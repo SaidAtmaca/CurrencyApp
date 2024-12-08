@@ -1,58 +1,18 @@
 plugins {
-    alias(libs.plugins.android.library)
-    kotlin("android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id("currency.android.library")
+    id("currency.android.library.compose")
+    id("currency.android.hilt")
 }
 
 android {
     namespace = "com.saidatmaca.presentation"
-    compileSdk = 34
 
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        getByName("release"){
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion ="1.4.3"
-    }
-    packaging {
-        resources {
-            exclude("/META-INF/{AL2.0,LGPL2.1}")
-        }
-    }
-    buildFeatures {
-        buildConfig = true
-        viewBinding= true
-    }
-
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
 
     implementation(project(":core:domain"))
+    implementation(project(":core:model"))
     implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
@@ -68,30 +28,23 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
-
-    //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-rc01")
-
-
-    //material
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
-    implementation("androidx.compose.material:material-icons-extended:1.6.7")
-
     //navigation
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation ("com.airbnb.android:lottie-compose:6.0.0")
+    implementation (libs.lottie.compose)
 
-    implementation("io.coil-kt:coil-compose:2.6.0")
-    implementation("io.coil-kt:coil-svg:2.2.2")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     //Glide compose
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.compose)
 
-    implementation("com.github.jaikeerthick:Composable-Graphs:v1.2.3") //ex: v1.2.3
+    implementation(libs.composable.graphs) //ex: v1.2.3
+    //material
+    implementation(libs.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+
+
 
 }

@@ -1,39 +1,17 @@
 plugins {
-    alias(libs.plugins.android.library)
-    kotlin("android")
-    id("kotlin-kapt")
+    id("currency.android.library")
+    id("currency.android.room")
 }
 
 android {
     namespace = "com.saidatmaca.domain"
-    compileSdk = 34
 
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-    }
-
-    buildTypes {
-        getByName("release"){
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
 
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -42,14 +20,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //gson
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
     // Coroutine Lifecycle Scopes
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // Room
-
-    var room_version = "2.5.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
 }

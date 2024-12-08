@@ -3,11 +3,11 @@ package com.saidatmaca.data.repository
 import android.util.Log
 import com.saidatmaca.common.Resource
 import com.saidatmaca.data.local.RoomDatabaseDao
-import com.saidatmaca.data.remote.APIService
-import com.saidatmaca.domain.model.ApiResponse
-import com.saidatmaca.domain.model.CoinFavModel
-import com.saidatmaca.domain.model.HistoryApiResponse
 import com.saidatmaca.domain.repository.AppRepository
+import com.saidatmaca.model.ApiResponse
+import com.saidatmaca.model.CoinFavModel
+import com.saidatmaca.model.HistoryApiResponse
+import com.saidatmaca.network.remote.APIService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

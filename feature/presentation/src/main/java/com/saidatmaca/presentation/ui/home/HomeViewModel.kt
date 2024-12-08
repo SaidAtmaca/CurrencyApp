@@ -9,11 +9,11 @@ import com.saidatmaca.common.GlobalValues
 import com.saidatmaca.common.Resource
 import com.saidatmaca.common.enums.SortValues
 import com.saidatmaca.common.enums.UIEvent
-import com.saidatmaca.domain.model.ApiResponse
-import com.saidatmaca.domain.model.Coin
-import com.saidatmaca.domain.model.CoinFavModel
 import com.saidatmaca.domain.observeFavCoinList
 import com.saidatmaca.domain.use_cases.CryptoUseCase
+import com.saidatmaca.model.ApiResponse
+import com.saidatmaca.model.Coin
+import com.saidatmaca.model.CoinFavModel
 import com.saidatmaca.presentation.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -88,7 +88,7 @@ class HomeViewModel @Inject constructor(
         return subList.isNotEmpty()
     }
 
-    fun getAllCryptoData(){
+   fun getAllCryptoData(){
 
         job = viewModelScope.launch {
             cryptoUseCase.getAllCryptoData()
