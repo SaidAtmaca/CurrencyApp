@@ -1,7 +1,7 @@
 package com.saidatmaca.domain.repository
 
 import com.saidatmaca.common.Resource
-import com.saidatmaca.model.ApiResponse
+import com.saidatmaca.model.AllCoinResponse
 import com.saidatmaca.model.CoinFavModel
 import com.saidatmaca.model.HistoryApiResponse
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +9,11 @@ import kotlinx.coroutines.flow.Flow
 interface AppRepository {
 
 
-    fun getAllCryptoData(): Flow<Resource<ApiResponse>>
+    fun getAllCryptoData(
+        onStart : ()->Unit,
+        onComplete:()->Unit,
+        onError:(String?)->Unit
+    ): Flow<AllCoinResponse>
 
 
     fun getCryptoHistoryPrice(coinId: String): Flow<Resource<HistoryApiResponse>>

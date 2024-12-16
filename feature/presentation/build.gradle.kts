@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:viewmodel"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

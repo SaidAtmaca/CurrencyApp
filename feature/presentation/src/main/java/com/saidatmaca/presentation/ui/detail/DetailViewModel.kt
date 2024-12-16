@@ -13,6 +13,7 @@ import com.saidatmaca.common.GlobalValues
 import com.saidatmaca.common.Resource
 import com.saidatmaca.common.enums.UIEvent
 import com.saidatmaca.common.toFormattedDate
+import com.saidatmaca.core.viewmodel.BaseViewModel
 import com.saidatmaca.domain.observeFavCoinList
 import com.saidatmaca.domain.use_cases.CryptoUseCase
 import com.saidatmaca.model.Coin
@@ -32,93 +33,83 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val cryptoUseCase: CryptoUseCase,
-) : ViewModel(){
+) : BaseViewModel() {
 
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
 
-    private val _coin : MutableState<Coin?> = mutableStateOf(null)
-    val coin : State<Coin?> = _coin
+    private val _coin: MutableState<Coin?> = mutableStateOf(null)
+    val coin: State<Coin?> = _coin
 
-    private val _historyApiResponse : MutableState<HistoryApiResponse?> = mutableStateOf(null)
-    val historyApiResponse : State<HistoryApiResponse?> = _historyApiResponse
+    private val _historyApiResponse: MutableState<HistoryApiResponse?> = mutableStateOf(null)
+    val historyApiResponse: State<HistoryApiResponse?> = _historyApiResponse
 
-    private val _historicalPriceList : MutableState<List<HistoryModel>> = mutableStateOf(listOf())
-    val historicalPriceList : State<List<HistoryModel>> = _historicalPriceList
+    private val _historicalPriceList: MutableState<List<HistoryModel>> = mutableStateOf(listOf())
+    val historicalPriceList: State<List<HistoryModel>> = _historicalPriceList
 
-    private val _isFavCoin : MutableState<Boolean> = mutableStateOf(false)
-    val isFavCoin : State<Boolean> = _isFavCoin
+    private val _isFavCoin: MutableState<Boolean> = mutableStateOf(false)
+    val isFavCoin: State<Boolean> = _isFavCoin
 
-    private val _favList : MutableState<List<CoinFavModel>> = mutableStateOf(listOf())
-    val favList : State<List<CoinFavModel>> = _favList
+    private val _favList: MutableState<List<CoinFavModel>> = mutableStateOf(listOf())
+    val favList: State<List<CoinFavModel>> = _favList
 
-    private val _highestPrice : MutableState<Double> = mutableStateOf(0.0)
-    val highestPrice : State<Double> = _highestPrice
+    private val _highestPrice: MutableState<Double> = mutableStateOf(0.0)
+    val highestPrice: State<Double> = _highestPrice
 
-    private val _lowestPrice : MutableState<Double> = mutableStateOf(0.0)
-    val lowestPrice : State<Double> = _lowestPrice
+    private val _lowestPrice: MutableState<Double> = mutableStateOf(0.0)
+    val lowestPrice: State<Double> = _lowestPrice
 
 
-    fun setFavCoin(boolean: Boolean){
-        _isFavCoin.value=boolean
+    fun setFavCoin(boolean: Boolean) {
+        _isFavCoin.value = boolean
     }
 
 
-
-    val lineGraphData :SnapshotStateList<LineData> = mutableStateListOf()
-
+    val lineGraphData: SnapshotStateList<LineData> = mutableStateListOf()
 
 
-    private var job: Job? = null
+    //private var job: Job? = null
 
-    fun setCoin(coin: Coin?){
+    fun setCoin(coin: Coin?) {
         _coin.value = coin
     }
 
-    fun goToHomeScreen(){
+    fun goToHomeScreen() {
         viewModelScope.launch {
             _eventFlow.emit(UIEvent.Navigate(Screen.HomeScreen.route))
             setCoin(null)
         }
     }
 
-    fun getCryptoHistoricalData(coinId:String){
+    fun getCryptoHistoricalData(coinId: String) {
 
         job = viewModelScope.launch {
             cryptoUseCase.getCryptoPriceHistory(coinId)
-                .onEach {result->
+                .onEach { result ->
                     when (result) {
 
                         is Resource.Success -> {
                             GlobalValues.showLoading.postValue(false)
-                            Log.e("allCryptoDataa1",result.data.toString())
+                            Log.e("allCryptoDataa1", result.data.toString())
 
                             result.data?.let {
 
                                 _historyApiResponse.value = it
-                                Log.e("allCryptoHistoryDataa3",it.status.toString())
-                                Log.e("allCryptHistoryoDataa4",it.data.toString())
-
-
-                                _historicalPriceList.value=it.data.history
-
-
+                                _historicalPriceList.value = it.data.history
                                 createGraphUI()
                                 findHighAndLowPrice()
 
 
-
                             }
-
 
 
                         }
 
                         is Resource.Error -> {
                             GlobalValues.showLoading.postValue(false)
-                            Log.e("allCryptoDataa2",result.data.toString())
+                            Log.e("allCryptoDataa2", result.data.toString())
                             _eventFlow.emit(
                                 UIEvent.ShowSnackbar(
                                     result.message ?: "Unknown error"
@@ -127,7 +118,7 @@ class DetailViewModel @Inject constructor(
                         }
 
                         is Resource.Loading -> {
-                            Log.e("allCryptoDataa3",result.data.toString())
+                            Log.e("allCryptoDataa3", result.data.toString())
                             GlobalValues.showLoading.postValue(true)
                         }
                     }
@@ -138,7 +129,7 @@ class DetailViewModel @Inject constructor(
 
     private fun findHighAndLowPrice() {
 
-        var priceList = arrayListOf<Double>()
+        val priceList = arrayListOf<Double>()
         _historicalPriceList.value.forEach {
             priceList.add(it.price)
         }
@@ -146,80 +137,66 @@ class DetailViewModel @Inject constructor(
         val maxValue = priceList.max()
         val minValue = priceList.min()
 
-        _highestPrice.value=maxValue
+        _highestPrice.value = maxValue
         _lowestPrice.value = minValue
 
     }
 
     private fun createGraphUI() {
 
-        var data = arrayListOf<LineData>()
-
-        /*_historicalPriceList.value.forEach {
-            data.add(LineData(it.timestamp.toString(),it.price))
-        }*/
+        val data = arrayListOf<LineData>()
         val size = _historicalPriceList.value.size
 
 
-        data.add(LineData(_historicalPriceList.value.last().timestamp.toFormattedDate(),_historicalPriceList.value.last().price))
-        data.add(LineData(_historicalPriceList.value.get(size/2).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/2).price))
-        data.add(LineData(_historicalPriceList.value.get(size/4).timestamp.toFormattedDate(),_historicalPriceList.value.get(size/4).price))
-        data.add(LineData(_historicalPriceList.value.get(0).timestamp.toFormattedDate(),_historicalPriceList.value.get(3).price))
+        data.add(
+            LineData(
+                _historicalPriceList.value.last().timestamp.toFormattedDate(),
+                _historicalPriceList.value.last().price
+            )
+        )
+        data.add(
+            LineData(
+                _historicalPriceList.value.get(size / 2).timestamp.toFormattedDate(),
+                _historicalPriceList.value.get(size / 2).price
+            )
+        )
+        data.add(
+            LineData(
+                _historicalPriceList.value.get(size / 4).timestamp.toFormattedDate(),
+                _historicalPriceList.value.get(size / 4).price
+            )
+        )
+        data.add(
+            LineData(
+                _historicalPriceList.value.get(0).timestamp.toFormattedDate(),
+                _historicalPriceList.value.get(3).price
+            )
+        )
 
         lineGraphData.clear()
         lineGraphData.addAll(data)
 
-        Log.e("linegraphhh",lineGraphData.toList().toString())
-
 
     }
 
 
-
-    fun checkFavPosition( ){
-        Log.e("sublistLog1",_favList.value.toString())
-        Log.e("sublistLog2",_coin.value.toString())
+    fun checkFavPosition() {
         val subList = _favList.value.filter { it.uuid == _coin.value?.uuid }
-
-        Log.e("sublistLog3",subList.toString())
-        if (subList.isEmpty()){
-            _isFavCoin.value = false
-        }else{
-            _isFavCoin.value=true
-        }
-       /* if (_favList.value.find { it.uuid == _coin.value?.uuid } == null){
-            _isFavCoin.value = false
-        }else{
-            _isFavCoin.value = true
-        }*/
-
+        _isFavCoin.value = subList.isNotEmpty()
 
     }
 
-    fun favClicked(){
+    fun favClicked() {
 
-        if (_isFavCoin.value){
+        if (_isFavCoin.value) {
             removeFromFavList()
-        }else{
+        } else {
             addCoinFavList()
         }
 
     }
 
-
-
-    fun getCoinList(){
-
-        viewModelScope.launch {
-            cryptoUseCase.getCoinList()
-                .collect{
-
-                    Log.e("userLog",it.toString())
-                }
-        }
-    }
-
-    fun addCoinFavList(){
+    fun addCoinFavList() {
         _coin.value?.let {
             val newCoin = CoinFavModel(it.uuid)
             var tempArrayList = arrayListOf<CoinFavModel>()
@@ -237,7 +214,7 @@ class DetailViewModel @Inject constructor(
 
     }
 
-    fun removeFromFavList(){
+    fun removeFromFavList() {
         _coin.value?.let { coin ->
 
             val tempArrayList = arrayListOf<CoinFavModel>()
@@ -251,19 +228,15 @@ class DetailViewModel @Inject constructor(
             }
 
 
-
-
         }
     }
 
 
-
-
     init {
 
-        this.observeFavCoinList(cryptoUseCase){
-            Log.e("favCoinList",it.toString())
-            _favList.value=it
+        this.observeFavCoinList(cryptoUseCase) {
+            Log.e("favCoinList", it.toString())
+            _favList.value = it
             checkFavPosition()
         }
     }

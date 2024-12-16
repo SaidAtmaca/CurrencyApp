@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.saidatmaca.common.enums.SortValues
 import com.saidatmaca.common.enums.UIEvent
@@ -46,12 +49,16 @@ fun Prevvv() {
 }
 
 @Composable
-fun HomeScreen(navController: NavController,
-               viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
 
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val activity = remember { context as? ComponentActivity }
+    val allCoinResponse by viewModel.allCoinResponse.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collectLatest { event ->
@@ -97,56 +104,46 @@ fun HomeScreen(navController: NavController,
 
 
     BackHandler {
-        showDialog=true
+        showDialog = true
     }
-
-
-    /** Api key */
-    // coinrankingea8fbbc917a3c8a7ff1952a072dfd0f47a14559e79cd2908
-    // https://api.coinranking.com/v2
-
 
     Box(
         modifier = Modifier
             .background(MainColorPalette.tone10)
             .fillMaxSize(),
-        contentAlignment = Alignment.Center)
+        contentAlignment = Alignment.Center
+    )
     {
 
 
-        Column(Modifier.fillMaxSize(),
+        Column(
+            Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             Row(
                 Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
 
-                Text(text = stringResource(id = R.string.rankingList),
+                Text(
+                    text = stringResource(id = R.string.rankingList),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp)
+                    fontSize = 18.sp
+                )
 
 
                 com.saidatmaca.presentation.components.FilterComponent {
                     viewModel.sortCoinList(it)
                 }
             }
-
-            /* Text(text = "Home Screen", fontSize = 14.sp)
-
-             Button(onClick = { viewModel.goToDetailScreen()  }) {
-                 Text(text = "Detail Page")
-             }
-
-             Button(onClick = { viewModel.getAllCryptoData()  }) {
-                 Text(text = "Get Cryptos")
-             }*/
             LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-                items(viewModel.coins.value){
+                items(allCoinResponse.data.coins) {
 
                     com.saidatmaca.presentation.components.CryptoRow(
                         coin = it,
@@ -161,15 +158,16 @@ fun HomeScreen(navController: NavController,
 
         }
 
-
-
-
-
-
+        if (uiState == HomeViewModel.HomeUIState.Loading){
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.Green,
+            )
+        }
 
 
     }
-    }
+}
 
 
 

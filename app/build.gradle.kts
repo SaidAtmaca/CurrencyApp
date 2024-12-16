@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
+    implementation(project(":core:worker"))
     implementation(project(":feature:presentation"))
 
     implementation(libs.androidx.core.ktx)
@@ -70,6 +71,10 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.okhttp.v500alpha2)
     implementation (libs.logging.interceptor.v500alpha2)
+
+    // Kotlin + coroutines
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
 
 
 }

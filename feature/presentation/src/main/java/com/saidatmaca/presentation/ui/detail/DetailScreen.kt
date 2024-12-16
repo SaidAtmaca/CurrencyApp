@@ -87,7 +87,7 @@ fun DetailScreen(
         viewModel.checkFavPosition()
 
         coin?.let {
-            Log.e("aboutToGoToApi",it.toString())
+            Log.e("aboutToGoToApi", it.toString())
             viewModel.getCryptoHistoricalData(it.uuid)
         }
 
@@ -133,7 +133,9 @@ fun DetailScreen(
 
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(MainColorPalette.tone10))
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(MainColorPalette.tone10))
 
 
     Scaffold(
@@ -150,22 +152,25 @@ fun DetailScreen(
 
         }
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(it)
-            .background(MainColorPalette.tone10),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .background(MainColorPalette.tone10),
             contentAlignment = Alignment.Center
-        ){
+        ) {
 
             Column(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.Start) {
+                horizontalAlignment = Alignment.Start
+            ) {
 
 
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .weight(0.7f)) {
+                        .weight(0.7f)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -180,54 +185,66 @@ fun DetailScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         )
                         {
-                            Image(painter = painter,
-                                contentDescription ="",
+                            Image(
+                                painter = painter,
+                                contentDescription = "",
                                 modifier = Modifier
                                     .size(IconSizeLarge)
                                     .padding(5.dp)
                             )
 
-                            Row(modifier = Modifier.padding(top = SpaceSmall),
+                            Row(
+                                modifier = Modifier.padding(top = SpaceSmall),
                                 horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = stringResource(id = R.string.rank),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.rank),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color= MainColorPalette.tone5,
-                                    modifier = Modifier.padding(horizontal = SpaceSmall))
+                                    color = MainColorPalette.tone5,
+                                    modifier = Modifier.padding(horizontal = SpaceSmall)
+                                )
 
-                                Text(text = viewModel.coin.value?.rank.toString() ?: "",
+                                Text(
+                                    text = viewModel.coin.value?.rank.toString(),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
-                                    color= MainColorPalette.tone5)
+                                    color = MainColorPalette.tone5
+                                )
                             }
 
 
 
-                            Text(text = viewModel.coin.value?.symbol ?: "",
+                            Text(
+                                text = viewModel.coin.value?.symbol ?: "",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium,
-                                color= GreyColorPalette.tone100,
-                                modifier = Modifier.padding(horizontal = SpaceMedium))
+                                color = GreyColorPalette.tone100,
+                                modifier = Modifier.padding(horizontal = SpaceMedium)
+                            )
 
-                            Text(text = viewModel.coin.value?.name ?: "",
+                            Text(
+                                text = viewModel.coin.value?.name ?: "",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color= MainColorPalette.tone5,
-                                modifier = Modifier.padding(horizontal = SpaceMedium))
+                                color = MainColorPalette.tone5,
+                                modifier = Modifier.padding(horizontal = SpaceMedium)
+                            )
 
 
                         }
 
 
-
                     }
 
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .weight(1f),
-                        verticalArrangement = Arrangement.Center) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .weight(1f),
+                        verticalArrangement = Arrangement.Center
+                    ) {
 
                         Row(Modifier.fillMaxWidth()) {
                             Text(
@@ -235,7 +252,8 @@ fun DetailScreen(
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MainColorPalette.tone5,
-                                modifier = Modifier.padding(horizontal = SpaceMedium))
+                                modifier = Modifier.padding(horizontal = SpaceMedium)
+                            )
                         }
 
                         Row(
@@ -250,20 +268,28 @@ fun DetailScreen(
                             Column(
                                 horizontalAlignment = Alignment.Start,
                                 verticalArrangement = Arrangement.Center,
-                                modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)){
+                                modifier = Modifier.padding(
+                                    horizontal = SpaceMedium,
+                                    vertical = SpaceSmall
+                                )
+                            ) {
 
-                                Text(text = viewModel.coin.value?.price?.formatPrice() ?: "" ,
+                                Text(
+                                    text = viewModel.coin.value?.price?.formatPrice() ?: "",
                                     fontSize = 22.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MainColorPalette.tone5,
-                                    modifier = Modifier.padding(1.dp))
+                                    modifier = Modifier.padding(1.dp)
+                                )
 
                                 viewModel.coin.value?.let {
-                                    Text(text = it.change.formatChange(it),
+                                    Text(
+                                        text = it.change.formatChange(it),
                                         fontSize = 14.sp,
-                                        color = if (it.change >= 0 ) MainColorPalette.tone7 else MainColorPalette.tone6,
+                                        color = if (it.change >= 0) MainColorPalette.tone7 else MainColorPalette.tone6,
                                         fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier.padding(1.dp))
+                                        modifier = Modifier.padding(1.dp)
+                                    )
                                 }
 
                             }
@@ -272,28 +298,46 @@ fun DetailScreen(
                             Column(
                                 horizontalAlignment = Alignment.Start,
                                 verticalArrangement = Arrangement.Center,
-                                modifier = Modifier.padding(horizontal = SpaceMedium, vertical = SpaceSmall)){
+                                modifier = Modifier.padding(
+                                    horizontal = SpaceMedium,
+                                    vertical = SpaceSmall
+                                )
+                            ) {
 
-                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(1.dp)) {
-                                    Text(text = stringResource(id = R.string.high),
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(1.dp)
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.high),
                                         fontWeight = FontWeight.Bold,
                                         color = MainColorPalette.tone5,
-                                        fontSize = 14.sp)
+                                        fontSize = 14.sp
+                                    )
 
-                                    Text(text = viewModel.highestPrice.value.formatPrice(),
+                                    Text(
+                                        text = viewModel.highestPrice.value.formatPrice(),
                                         fontSize = 14.sp,
-                                        color = if (viewModel.highestPrice.value >= viewModel.coin.value?.price ?: 0.0) MainColorPalette.tone7 else MainColorPalette.tone6)
+                                        color = if (viewModel.highestPrice.value >= viewModel.coin.value?.price ?: 0.0) MainColorPalette.tone7 else MainColorPalette.tone6
+                                    )
                                 }
-                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(1.dp)) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(1.dp)
+                                ) {
 
-                                    Text(text = stringResource(id = R.string.low),
+                                    Text(
+                                        text = stringResource(id = R.string.low),
                                         fontWeight = FontWeight.Bold,
                                         color = MainColorPalette.tone5,
-                                        fontSize = 14.sp)
+                                        fontSize = 14.sp
+                                    )
 
-                                    Text(text = viewModel.lowestPrice.value.formatPrice(),
+                                    Text(
+                                        text = viewModel.lowestPrice.value.formatPrice(),
                                         fontSize = 14.sp,
-                                        color = if (viewModel.lowestPrice.value < viewModel.coin.value?.price ?: 0.0) MainColorPalette.tone6 else MainColorPalette.tone7)
+                                        color = if (viewModel.lowestPrice.value < viewModel.coin.value?.price ?: 0.0) MainColorPalette.tone6 else MainColorPalette.tone7
+                                    )
                                 }
                             }
 
@@ -306,7 +350,8 @@ fun DetailScreen(
                     Modifier
                         .fillMaxSize()
                         .weight(0.3f),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
                     AnimatedVisibility(visible = viewModel.lineGraphData.isNotEmpty()) {
                         LineGraph(
@@ -324,9 +369,11 @@ fun DetailScreen(
                                     lineColor = MainColorPalette.tone5,
                                     pointColor = MainColorPalette.tone5,
                                     fillType = LineGraphFillType
-                                        .Gradient(Brush.verticalGradient(
-                                        listOf(MainColorPalette.tone8, Color.White)
-                                    ))
+                                        .Gradient(
+                                            Brush.verticalGradient(
+                                                listOf(MainColorPalette.tone8, Color.White)
+                                            )
+                                        )
 
                                 )
                             )
@@ -336,26 +383,7 @@ fun DetailScreen(
                 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
-
-
-
-
-
 
 
         }

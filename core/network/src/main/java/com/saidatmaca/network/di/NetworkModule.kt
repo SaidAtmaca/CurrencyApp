@@ -2,6 +2,7 @@ package com.saidatmaca.network.di
 
 import com.saidatmaca.common.Constants
 import com.saidatmaca.network.remote.APIService
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +23,10 @@ object NetworkModule {
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
+
             .build()
     }
 

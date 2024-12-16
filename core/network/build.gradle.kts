@@ -21,4 +21,7 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.okhttp.v500alpha2)
     implementation (libs.logging.interceptor.v500alpha2)
+
+    implementation(libs.sandwich)
+    implementation(libs.sandwich.retrofit)
 }

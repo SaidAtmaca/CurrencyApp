@@ -4,14 +4,19 @@ import android.util.Log
 import com.saidatmaca.common.Resource
 import com.saidatmaca.data.local.RoomDatabaseDao
 import com.saidatmaca.domain.repository.AppRepository
-import com.saidatmaca.model.ApiResponse
+import com.saidatmaca.model.AllCoinResponse
 import com.saidatmaca.model.CoinFavModel
 import com.saidatmaca.model.HistoryApiResponse
 import com.saidatmaca.network.remote.APIService
+import com.skydoves.sandwich.message
+import com.skydoves.sandwich.onFailure
+import com.skydoves.sandwich.suspendOnSuccess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import okio.IOException
 
@@ -22,26 +27,24 @@ class AppRepositoryImpl(
 ) : AppRepository {
 
 
-    override fun getAllCryptoData(): Flow<Resource<ApiResponse>> = flow {
-        emit(Resource.Loading())
+    override fun getAllCryptoData(
+        onStart: () -> Unit,
+        onComplete: () -> Unit,
+        onError: (String?) -> Unit
+    ): Flow<AllCoinResponse> = flow {
 
-        try {
 
-            val apiResponse = apiService.getAllCryptoData()
+        val apiResponse = apiService.getAllCryptoData()
 
-            Log.e("apiResponseLog1", apiResponse.status.toString())
-            Log.e("apiResponseLog2", apiResponse.data.toString())
+        apiResponse.suspendOnSuccess {
 
-            if (apiResponse.status.equals("success")) {
-                emit(Resource.Success(apiResponse))
-            } else {
-                emit(Resource.Error("Data Failed"))
-            }
+            emit(data)
 
-        } catch (e: IOException) {
-            emit(Resource.Error(e.message.toString()))
+        }.onFailure {
+
+            onError(message())
         }
-    }
+    }.onStart { onStart() }.onCompletion { onComplete() }
 
     override fun getCryptoHistoryPrice(coinId: String): Flow<Resource<HistoryApiResponse>> = flow {
         emit(Resource.Loading())
