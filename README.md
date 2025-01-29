@@ -12,6 +12,11 @@ You can download app and install from **[here.](https://github.com/saidAtmaca98/
 - Used **Room** for Database.
 - Used **[Compose-Graphs](https://github.com/jaikeerthick/Composable-Graphs)** for Graphs
 - Used **Retrofit** for getting data from api.
+- Multi Module App.
+- Convention Plugin.
+- Base ViewModel
+- Shared ViewModel
+- Work Manager
 
 ## Preview
 
